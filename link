@@ -47,6 +47,7 @@ if [ -d "./zsh" ]; then
         if [ "$SHELL" != "$(which zsh)" ]; then
             echo "Setting ZSH as the default shell"
             chsh -s "$(which zsh)"
+            echo "Please log out and log back in to apply the changes.
         fi
     fi
 fi
