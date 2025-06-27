@@ -27,7 +27,8 @@
         }
     },
     "terminal.integrated.automationProfile.linux": {
-        
-    },
+        "defaultProfile": "zsh",
+        "profileName": "zsh"
+    }
 
 }
