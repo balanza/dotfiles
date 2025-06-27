@@ -1,0 +1,12 @@
+create_x509() {
+  machine_ip=${1?:required argument}
+  openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 \
+      -nodes -keyout "$machine_ip".key -out "$machine_ip".crt -subj "/CN=$machine_ip" \
+      -addext "subjectAltName=IP:$machine_ip"
+}
+
+# join a multiline file into a single base64 string
+base64_join(){
+  file=${1?:required argument}
+  tr -d '\n' < "$file" | base64 -w 0
+}

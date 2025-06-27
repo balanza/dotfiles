@@ -1,0 +1,18 @@
+[user]
+	name = balanza
+	email = ema.decu@gmail.com
+	signingkey = ed25519
+[core]
+	editor = vim
+[merge]
+	conflictstyle = diff3
+[rerere]
+	enabled = true
+[gpg]
+	program = gpg2
+[pull]
+	rebase = false
+[init]
+    defaultBranch = main
+[includeIf "hasconfig:remote.*.url:git@github.com:trento-project/**"]
+	path = ~/.suse-gitconfig

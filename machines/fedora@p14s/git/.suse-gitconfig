@@ -1,0 +1,10 @@
+[pull]
+        rebase = false
+[user]
+        email = emanuele.decupis@suse.com
+        signingkey = 75DA6CE6EE81E2A8
+[gpg]
+        program = gpg2
+[commit]
+        gpgsign = true
+

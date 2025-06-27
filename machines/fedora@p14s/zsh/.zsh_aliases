@@ -1,0 +1,39 @@
+# npm
+alias yt="npm run test"
+alias yl="npm run lint"
+alias yf="npm run format"
+alias yb="npm run build"
+alias ys="npm run storybook"
+alias yi="npm install"
+alias yid="npm install --save-dev"
+
+# git
+if command -v git 2>&1 >/dev/null
+then
+    alias gri="git rebase -i --empty=drop origin/$(git_main_branch)"
+    alias gffm="git fetch origin main:main"
+    alias grb="git branch -r | awk '{print \$1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print \$1}'" # not in remote
+    alias gpb='grb >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -D </tmp/merged-branches'
+fi
+
+# docker
+if command -v docker-compose 2>&1 >/dev/null
+then
+    function docker_kill_and_remove() {
+        all=$(docker ps -a -q)
+        target=$1 || $all
+        docker kill $target
+        docker rm $target
+    }
+    alias dkr="docker_kill_and_remove"
+    alias dcu="docker-compose up"
+    alias dcu="docker-compose up"
+    alias dcud="docker-compose up -d"
+    alias dcd="docker-compose down"
+    alias dcdv="docker-compose down -v"
+    alias dcl="docker-compose logs"
+fi
+
+
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
