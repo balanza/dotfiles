@@ -72,5 +72,17 @@ if [ -d "./vim" ]; then
     done
 fi
 
+if [ -d "./vscode-flatpak" ]; then
+    echo ">>> Setup VSCODE"
+    if [ -d "$HOME/.var/app/com.visualstudio.code/config/Code/User" ]; then
+        files=("settings.json" "keybindings.json")
+        for file in "${files[@]}"; do
+            link_file "$(pwd)/vscode-flatpak/$file" "$HOME/.var/app/com.visualstudio.code/config/Code/User/$(basename "$file")"
+        done
+    else
+        echo "Warning: VSCode flatpak configuration directory does not exist."
+    fi
+fi
+
 
 popd > /dev/null || { echo "Failed to return to the previous directory."; exit 1; }
