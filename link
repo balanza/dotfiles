@@ -36,6 +36,31 @@ exec_lifecycle() {
     fi
 }
 
+dconf_load() {
+    settings_dir=${1?required argument}
+    # Check if dconf is installed
+    if ! command -v dconf &> /dev/null; then
+        echo "dconf is not installed. Skipping GNOME setup."
+    else
+        # Backup existing GNOME settings
+        echo "Backing up existing GNOME settings..."
+        dconf dump /org/gnome/ > /tmp/gnome-settings-backup.txt
+
+        settings=$(find $settings_dir -type f -name ".settings")
+        for setting in $settings; do
+            echo "Linking GNOME setting: $setting"
+            dconf load "/org/gnome/$(dirname $setting)" < "$settings_dir/$setting" || {
+                echo "Error loading GNOME setting $setting"
+                dconf load /org/gnome/ < "/tmp/gnome-settings-backup.txt" 
+                exit 1
+            }
+        done
+
+        rm -f /tmp/gnome-settings-backup.txt
+
+    fi
+}
+
 exec_lifecycle "pre-link"
 
 if [ -d "./zsh" ]; then
@@ -100,16 +125,10 @@ fi
 if [ -d "./gnome" ]; then
     echo ">>> Setup GNOME"
 
-    if [ -f "keybindings.desktop.bak" ]; then
-        dconf load /org/gnome/desktop/wm/keybindings/ < "keybindings.desktop.bak"
+    if [ -d "./gnome/dconf" ] ; then
+        dconf_load "$(pwd)/gnome/dconf"
     fi
-    if [ -f "keybindings.media-keys.bak" ]; then
-        dconf load /org/gnome/settings-daemon/plugins/media-keys/ < "keybindings.media-keys.bak"
-    fi
-    if [ -f "keyboard_layout.bak" ]; then
-        dconf write /org/gnome/desktop/input-sources/sources $(cat keyboard_layout.bak)
-    fi
-
+    
 fi
 
 exec_lifecycle "post-link"

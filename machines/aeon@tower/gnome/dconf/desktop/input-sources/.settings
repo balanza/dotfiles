@@ -1,0 +1,7 @@
+[/]
+current=uint32 0
+mru-sources=[('xkb', 'eu'), ('xkb', 'us')]
+per-window=false
+show-all-sources=true
+sources=[('xkb', 'eu')]
+xkb-options=['lv3:ralt_switch']
