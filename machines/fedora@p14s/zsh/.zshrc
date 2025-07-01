@@ -70,7 +70,7 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git history docker docker-compose asdf zsh-interactive-cd tldr)
+plugins=(git)
 
 source ~/.oh-my-zsh/oh-my-zsh.sh
 
@@ -100,7 +100,7 @@ source ~/.oh-my-zsh/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-PATH=$PATH:$HOME/bin:$HOME/.local/bin
+PATH="$PATH:$HOME/bin:$HOME/.local/bin:${ASDF_DATA_DIR:-$HOME/.asdf}/shims"
 
 
 autoload -Uz compinit && compinit

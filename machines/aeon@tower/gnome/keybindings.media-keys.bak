@@ -1,0 +1,27 @@
+[/]
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/']
+
+[custom-keybindings/custom0]
+binding='<Super>t'
+command='/var/lib/flatpak/app/org.wezfurlong.wezterm/current/active/export/bin/org.wezfurlong.wezterm'
+name='Open terminal'
+
+[custom-keybindings/custom1]
+binding='<Super>s'
+command='/var/lib/flatpak/app/com.slack.Slack/current/active/export/bin/com.slack.Slack'
+name='Focus Slack'
+
+[custom-keybindings/custom2]
+binding='<Super>w'
+command='/var/lib/flatpak/app/io.github.mimbrero.WhatsAppDesktop/current/active/export/bin/io.github.mimbrero.WhatsAppDesktop'
+name='Focus WhatsApp'
+
+[custom-keybindings/custom3]
+binding='<Super>e'
+command="sh -c \"/var/lib/flatpak/app/org.telegram.desktop/current/active/export/bin/org.telegram.desktop;  busctl --user call org.gnome.Shell /de/lucaswerkmeister/ActivateWindowByTitle de.lucaswerkmeister.ActivateWindowByTitle activateBySubstring s 'Telegram'\""
+name='Focus Telegram'
+
+[custom-keybindings/custom4]
+binding='<Super>c'
+command="sh -c \"busctl --user call org.gnome.Shell /de/lucaswerkmeister/ActivateWindowByTitle de.lucaswerkmeister.ActivateWindowByTitle activateBySubstring s 'Visual Studio Code' | grep -o '....$' | read res;  [ $res != true]  || /usr/share/code/code\"\n"
+name='Focus VSCode'

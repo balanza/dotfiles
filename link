@@ -46,7 +46,7 @@ if [ -d "./zsh" ]; then
     else
         # Check if oh-my-zsh is installed
         if [ ! -d "$HOME/.oh-my-zsh" ]; then
-            echo "Installing oh-my-zsh..."
+            echo "Installing oh-my-zsh..."``
             sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
         else
             echo "oh-my-zsh is already installed, skipping."             
@@ -95,6 +95,21 @@ if [ -d "./vscode-flatpak" ]; then
     else
         echo "Warning: VSCode flatpak configuration directory does not exist."
     fi
+fi
+
+if [ -d "./gnome" ]; then
+    echo ">>> Setup GNOME"
+
+    if [ -f "keybindings.desktop.bak" ]; then
+        dconf load /org/gnome/desktop/wm/keybindings/ < "keybindings.desktop.bak"
+    fi
+    if [ -f "keybindings.media-keys.bak" ]; then
+        dconf load /org/gnome/settings-daemon/plugins/media-keys/ < "keybindings.media-keys.bak"
+    fi
+    if [ -f "keyboard_layout.bak" ]; then
+        dconf write /org/gnome/desktop/input-sources/sources $(cat keyboard_layout.bak)
+    fi
+
 fi
 
 exec_lifecycle "post-link"
