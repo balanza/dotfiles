@@ -1,0 +1,6 @@
+[/]
+screenshot=@as []
+screenshot-window=['<Alt>Print']
+show-screen-recording-ui=@as []
+show-screenshot-ui=['<Control>Print']
+toggle-quick-settings=['<Super>q']

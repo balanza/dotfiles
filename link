@@ -36,6 +36,39 @@ exec_lifecycle() {
     fi
 }
 
+dconf_load() {
+    settings_dir=${1?required argument}
+    # Check if dconf is installed
+    if ! command -v dconf &> /dev/null; then
+        echo "dconf is not installed. Skipping GNOME setup."
+    else
+        # Backup existing GNOME settings
+        echo "Backing up existing GNOME settings..."
+        dconf dump /org/gnome/ > /tmp/gnome-settings-backup.txt
+
+        pushd "$settings_dir" > /dev/null || { echo "Directory $settings_dir does not exist."; exit 1; }
+        settings=$(find . -type f -name ".settings")
+        for setting in $settings; do
+            echo "Linking GNOME setting: $setting"
+            section="/org/gnome/$(dirname $setting | sed 's|^\./||')/"
+            echo "Section: $section"
+            dconf load "$section" < "$setting" || {
+                echo "Error loading GNOME setting $setting"
+                echo "Restoring previous GNOME settings from backup..."
+                dconf load /org/gnome/ < "/tmp/gnome-settings-backup.txt" && {
+                    echo "Restore ok"
+                    exit 1
+                }
+                exit 1
+            }
+        done
+        popd > /dev/null || { echo "Failed to return to the previous directory."; exit 1; }
+
+        rm -f /tmp/gnome-settings-backup.txt
+
+    fi
+}
+
 exec_lifecycle "pre-link"
 
 if [ -d "./zsh" ]; then
@@ -100,19 +133,10 @@ fi
 if [ -d "./gnome" ]; then
     echo ">>> Setup GNOME"
 
-    if [ -f "./gnome/keybindings.desktop.bak" ]; then
-        echo "Restoring GNOME desktop keybindings from backup"
-        dconf load /org/gnome/desktop/wm/keybindings/ < "./gnome/keybindings.desktop.bak"
+    if [ -d "./gnome/dconf" ] ; then
+        dconf_load "$(pwd)/gnome/dconf"
     fi
-    if [ -f "./gnome/keybindings.media-keys.bak" ]; then
-        echo "Restoring GNOME media keys keybindings from backup"
-        dconf load /org/gnome/settings-daemon/plugins/media-keys/ < "./gnome/keybindings.media-keys.bak"
-    fi
-    if [ -f "./gnome/keyboard_layout.bak" ]; then
-        echo "Restoring GNOME keyboard layout from backup"
-        dconf write /org/gnome/desktop/input-sources/sources "$(cat ./gnome/keyboard_layout.bak)"
-    fi
-
+    
 fi
 
 exec_lifecycle "post-link"
