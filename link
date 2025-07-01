@@ -100,14 +100,17 @@ fi
 if [ -d "./gnome" ]; then
     echo ">>> Setup GNOME"
 
-    if [ -f "keybindings.desktop.bak" ]; then
-        dconf load /org/gnome/desktop/wm/keybindings/ < "keybindings.desktop.bak"
+    if [ -f "./gnome/keybindings.desktop.bak" ]; then
+        echo "Restoring GNOME desktop keybindings from backup"
+        dconf load /org/gnome/desktop/wm/keybindings/ < "./gnome/keybindings.desktop.bak"
     fi
-    if [ -f "keybindings.media-keys.bak" ]; then
-        dconf load /org/gnome/settings-daemon/plugins/media-keys/ < "keybindings.media-keys.bak"
+    if [ -f "./gnome/keybindings.media-keys.bak" ]; then
+        echo "Restoring GNOME media keys keybindings from backup"
+        dconf load /org/gnome/settings-daemon/plugins/media-keys/ < "./gnome/keybindings.media-keys.bak"
     fi
-    if [ -f "keyboard_layout.bak" ]; then
-        dconf write /org/gnome/desktop/input-sources/sources $(cat keyboard_layout.bak)
+    if [ -f "./gnome/keyboard_layout.bak" ]; then
+        echo "Restoring GNOME keyboard layout from backup"
+        dconf write /org/gnome/desktop/input-sources/sources "$(cat ./gnome/keyboard_layout.bak)"
     fi
 
 fi
