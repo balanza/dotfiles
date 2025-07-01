@@ -24,6 +24,20 @@ link_file() {
     fi
 }
 
+exec_lifecycle() {
+    if [ -f "$1" ]; then
+        echo ">>> Executing lifecycle script: $1"
+        bash -c "./$1" || {
+            echo "Error executing lifecycle script $1"
+            exit 1
+        }
+    else
+        echo "Warning: Lifecycle script $1 does not exist"
+    fi
+}
+
+exec_lifecycle "pre-link"
+
 if [ -d "./zsh" ]; then
     echo ">>> Setup ZSH"
     # Check if zsh is installed
@@ -82,6 +96,8 @@ if [ -d "./vscode-flatpak" ]; then
         echo "Warning: VSCode flatpak configuration directory does not exist."
     fi
 fi
+
+exec_lifecycle "post-link"
 
 
 popd > /dev/null || { echo "Failed to return to the previous directory."; exit 1; }
