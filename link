@@ -17,7 +17,7 @@ link_file() {
     source_file=${1?required argument}
     target_file=${2?required argument}
     if [ -f "$source_file" ]; then
-        echo "Linking $source_file --> $target_file"
+        echo "Linking $source_file --&gt; $target_file"
         ln -sf "$source_file" "$target_file"
     else
         echo "Warning: $source_file does not exist"
@@ -39,12 +39,12 @@ exec_lifecycle() {
 dconf_load() {
     settings_dir=${1?required argument}
     # Check if dconf is installed
-    if ! command -v dconf &> /dev/null; then
+    if ! command -v dconf &amp;> /dev/null; then
         echo "dconf is not installed. Skipping GNOME setup."
     else
         # Backup existing GNOME settings
         echo "Backing up existing GNOME settings..."
-        dconf dump /org/gnome/ > /tmp/gnome-settings-backup.txt
+        dconf dump /org/gnome/ &gt; /tmp/gnome-settings-backup.txt
 
         pushd "$settings_dir" > /dev/null || { echo "Directory $settings_dir does not exist."; exit 1; }
         settings=$(find . -type f -name ".settings")
@@ -52,10 +52,10 @@ dconf_load() {
             echo "Linking GNOME setting: $setting"
             section="/org/gnome/$(dirname $setting | sed 's|^\./||')/"
             echo "Section: $section"
-            dconf load "$section" < "$setting" || {
+            dconf load "$section" &lt; "$setting" || {
                 echo "Error loading GNOME setting $setting"
                 echo "Restoring previous GNOME settings from backup..."
-                dconf load /org/gnome/ < "/tmp/gnome-settings-backup.txt" && {
+                dconf load /org/gnome/ &lt; "/tmp/gnome-settings-backup.txt" &amp;&amp; {
                     echo "Restore ok"
                     exit 1
                 }
@@ -74,7 +74,7 @@ exec_lifecycle "pre-link"
 if [ -d "./zsh" ]; then
     echo ">>> Setup ZSH"
     # Check if zsh is installed
-    if ! command -v zsh &> /dev/null; then
+    if ! command -v zsh &amp;> /dev/null; then
         echo "Zsh is not installed. Skipping ZSH setup."
     else
         # Check if oh-my-zsh is installed
