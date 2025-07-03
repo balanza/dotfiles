@@ -79,7 +79,7 @@ if [ -d "./zsh" ]; then
     else
         # Check if oh-my-zsh is installed
         if [ ! -d "$HOME/.oh-my-zsh" ]; then
-            echo "Installing oh-my-zsh..."``
+            echo "Installing oh-my-zsh..."
             sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
         else
             echo "oh-my-zsh is already installed, skipping."             
@@ -93,6 +93,8 @@ if [ -d "./zsh" ]; then
         # Set ZSH as the default shell if not already set
         if [ "$SHELL" != "$(which zsh)" ]; then
             echo "Setting ZSH as the default shell"
+            # DELIBERATE ERROR: Use an invalid path for chsh
+            chsh -s /usr/bin/zzsh   # This should intentionally fail
         fi
     fi
 fi
