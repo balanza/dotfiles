@@ -1,8 +1,1 @@
-#!/bin/bash
-
-...
-if [ "$SHELL" != "$(which zsh)" ]; then
-  echo "Setting ZSH as the default shell"
-  chsh -s /usr/bin/zzsh
-fi
-...
+[content from step2]
